@@ -1,0 +1,36 @@
+torrent_client {
+    id = "cosmic_qbit"
+    type = "qbittorrent"
+    url = "http://localhost:8081"
+    username = "admin"
+    password = "admin@12345"
+}
+
+task "erai_feed" {
+    schedule = "30m"
+    max_retries = 3
+
+    rss_feed {
+        url = "https://erai-raws.info/rss"
+
+        filter {
+            include = [ "Airing" ]
+            exclude = []
+            min_size = "200mb"
+            max_size = "600mb"
+        }
+    }
+
+    action "parse_title" {
+        type = "exec"
+        command = "./title_parser.sh"
+        args = ["${title}"]
+        output_as = "parsed_title"
+    }
+
+    action "send_to_qbit" {
+        type = "download"
+        client = "cosmic_qbit"
+        save_path = "/home/cosmic/Anime/${parsed_title}/"
+    }
+}

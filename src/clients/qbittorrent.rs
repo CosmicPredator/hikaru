@@ -30,11 +30,11 @@ impl QBittorrent {
         http_client: reqwest::Client,
     ) -> Self {
         Self {
-            id: id.to_string(),
-            client_type: client_type.to_string(),
-            url: url.to_string(),
-            username: username.to_string(),
-            password: password.to_string(),
+            id: id.into(),
+            client_type: client_type.into(),
+            url: url.into(),
+            username: username.into(),
+            password: password.into(),
             http_client,
         }
     }

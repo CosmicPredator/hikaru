@@ -3,8 +3,10 @@ use log::info;
 
 mod helpers;
 mod clients;
+mod task;
 mod feeds;
 mod filters;
+mod actions;
 mod hconf_parser;
 
 type AnyErr = anyhow::Error;

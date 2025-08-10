@@ -1,5 +1,8 @@
+use std::path::PathBuf;
+
 use anyhow::anyhow;
-use log::info;
+
+use crate::{hconf_parser::model::HConf, task::task_pipeline::TaskPipeline};
 
 mod helpers;
 mod clients;
@@ -23,6 +26,12 @@ fn init_logger() -> Result<(), AnyErr> {
 #[tokio::main]
 async fn main() -> Result<(), AnyErr> {
     init_logger()?;
-    info!("starting application");
+    let hconf = HConf::try_from(PathBuf::from("tasks.hconf"))
+        .map_err(|_| anyhow!("error"))?;
+    let pipeline = TaskPipeline::try_from(hconf)
+        .map_err(|_|anyhow!("error"))?;
+    pipeline.run()
+        .await
+        .map_err(|_|anyhow!("error"))?;
     Ok(())
 }

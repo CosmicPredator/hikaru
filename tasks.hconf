@@ -1,9 +1,9 @@
 torrent_client {
     id = "cosmic_qbit"
     type = "qbittorrent"
-    url = "http://localhost:8081"
-    username = "admin"
-    password = "admin@12345"
+    url = "http://localhost:8080"
+    username = "cosmic"
+    password = "drstrange243"
 }
 
 task "erai_feed" {
@@ -11,7 +11,7 @@ task "erai_feed" {
     max_retries = 3
 
     rss_feed {
-        url = "https://erai-raws.info/rss"
+        url = "https://www.erai-raws.info/feed-my-anime-list/?res=1080p&type=torrent&cat=episodes&token=e5cf44763b0386d10da3aa7706234900"
 
         filter {
             include = [ "Airing" ]

@@ -1,0 +1,1 @@
+echo "anime_current"

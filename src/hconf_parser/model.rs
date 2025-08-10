@@ -60,8 +60,7 @@ pub struct HConf {
 #[derive(Debug)]
 pub enum HConfParseError {
     FileReadError(String),
-    ParseError(String),
-    InvalidFormat,
+    ParseError(String)
 }
 
 impl From<std::io::Error> for HConfParseError {

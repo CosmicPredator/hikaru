@@ -44,10 +44,9 @@ impl QBittorrent {
         endpoint: &str,
         form_data: HashMap<&str, &str>,
     ) -> Result<String, reqwest::Error> {
-        let url = format!("{}{}", self.url, endpoint);
         let resp = self
             .http_client
-            .post(url)
+            .post(endpoint)
             .header("User-Agent", "toru-client")
             .header("Accept", "*/*")
             .form(&form_data)
@@ -91,7 +90,10 @@ impl TorrentClient for QBittorrent {
         let response_text = self
             .post_form(&url, form_data)
             .await
-            .map_err(|_| QBittorrentError::LoginFailedError)?;
+            .map_err(|err| {
+                error!("{err}");
+                QBittorrentError::LoginFailedError
+            })?;
 
         if response_text.ne("Ok.") {
             error!("login failed. invalid credentials");

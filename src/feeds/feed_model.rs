@@ -1,5 +1,5 @@
 use serde::Deserialize;
-use std::{path::PathBuf, str::FromStr};
+use std::{fmt::Display, path::PathBuf, str::FromStr};
 
 #[derive(Debug, Deserialize)]
 #[serde(rename = "rss")]
@@ -15,18 +15,24 @@ pub struct Channel {
 
 #[derive(Debug, Deserialize)]
 pub struct Item {
-    pub title: String,
-    pub link: String,
-    pub lintype: String,
-    pub size: String,
+    pub title: Option<String>,
+    pub link: Option<String>,
+    pub linktype: Option<String>,
+    pub size: Option<String>,
     #[serde(rename = "pubDate")]
-    pub pub_date: String,
+    pub pub_date: Option<String>,
     #[serde(rename = "infohash")]
-    pub info_hash: String,
+    pub info_hash: Option<String>,
 }
 
 #[derive(Debug)]
 pub struct RssFeedParseError(String);
+
+impl Display for RssFeedParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
 
 impl From<quick_xml::DeError> for RssFeedParseError {
     fn from(value: quick_xml::DeError) -> Self {
@@ -58,6 +64,8 @@ impl RssFeedModel {
     pub async fn from_url(feed_url: &str, http_client: reqwest::Client,) -> Result<Self, RssFeedParseError> {
         let request = http_client
             .get(feed_url)
+            .header("User-Agent", "hikaru-client")
+            .header("Accept", "*/*")
             .send()
             .await
             .map_err(|_| RssFeedParseError("unable to fetch rss feed from url".into()))?;

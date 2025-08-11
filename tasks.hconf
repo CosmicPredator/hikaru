@@ -1,6 +1,6 @@
 torrent_client {
-    id = "cosmic_qbit"
     type = "qbittorrent"
+    id = "cosmic_qbit"
     url = "http://localhost:8080"
     username = "cosmic"
     password = "drstrange243"
@@ -24,7 +24,7 @@ task "erai_feed" {
     action "parse_title" {
         type = "exec"
         command = "./title_parser.sh"
-        args = ["${title}"]
+        args = [ title ]
         output_as = "parsed_title"
     }
 

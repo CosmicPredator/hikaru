@@ -1,11 +1,24 @@
 use log::{error, info};
-use std::{collections::HashMap, path::Path};
+use std::{collections::HashMap, fmt::Display, path::Path};
 
 use crate::clients::TorrentClient;
 
 pub enum QBittorrentError {
     LoginFailedError,
     DownloadQueueError(String),
+}
+
+impl Display for QBittorrentError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match &self {
+            QBittorrentError::LoginFailedError => {
+                write!(f, "login failed")
+            },
+            QBittorrentError::DownloadQueueError(reason) => {
+                write!(f, "download failed. reason: {}", reason)
+            },
+        }
+    }
 }
 
 pub struct QBittorrent {
@@ -47,7 +60,7 @@ impl QBittorrent {
         let resp = self
             .http_client
             .post(endpoint)
-            .header("User-Agent", "toru-client")
+            .header("User-Agent", "hikaru-client")
             .header("Accept", "*/*")
             .form(&form_data)
             .send()

@@ -25,12 +25,11 @@ task "erai_feed" {
         type = "exec"
         command = "./title_parser.sh"
         args = [ title ]
-        output_as = "parsed_title"
     }
 
     action "send_to_qbit" {
         type = "download"
         client = "cosmic_qbit"
-        save_path = "/home/cosmic/Anime/${parsed_title}/"
+        save_path = "/home/cosmic/Anime/${parse_title.output}/"
     }
 }

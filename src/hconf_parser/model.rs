@@ -60,8 +60,7 @@ pub enum FeedAction {
     #[serde(rename = "exec")]
     Exec {
         command: String,
-        args: Vec<String>,
-        output_as: String
+        args: Vec<String>
     },
     #[serde(rename = "download")]
     Download {
